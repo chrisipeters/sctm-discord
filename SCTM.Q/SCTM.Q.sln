@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCTM.Q", "SCTM.Q\SCTM.Q.csproj", "{8BA49E51-E6FF-4747-8655-89DB5530A91E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BA49E51-E6FF-4747-8655-89DB5530A91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA49E51-E6FF-4747-8655-89DB5530A91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA49E51-E6FF-4747-8655-89DB5530A91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA49E51-E6FF-4747-8655-89DB5530A91E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BCD99A4C-14B7-4E8B-943E-E54C8FC1CCF7}
+	EndGlobalSection
+EndGlobal
