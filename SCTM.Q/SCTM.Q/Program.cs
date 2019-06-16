@@ -53,27 +53,6 @@ namespace SCTM.Q
                 await message.Channel.SendMessageAsync("Pong!");
             }
 
-            if (message.Content.Trim().ToLower().StartsWith("!hello "))
-            {
-                var _userHandle = message.Content.ToLower().Replace("!whois", "").Trim();
-                //await message.Channel.SendMessageAsync(_userHandle);
-
-                HttpClient _client = new HttpClient();
-                var result = await _client.PostAsync($"https://localhost:44325/auth/CheckUsername?username={_userHandle}", null);
-                var content = await result.Content.ReadAsStringAsync();
-
-                var _userId = message.Author.Id;
-                var _username = message.Author.Username;
-                var _disc = message.Author.Discriminator;
-
-                var _message = $"{_username}#{_disc} ({_userId.ToString()})";
-
-
-
-                //await message.Channel.SendMessageAsync(_message);
-                await message.Channel.SendMessageAsync(content);
-            }
-
             if (message.Content.Trim().ToLower().StartsWith("!ships"))
             {
                 var _commandArray = message.Content.Trim().Split(' ');
@@ -163,6 +142,42 @@ namespace SCTM.Q
                     }
 
                 }
+            }
+
+            if (message.Content.Trim().ToLower().StartsWith("!hello"))
+            {
+                string _code = null;
+                try { _code = message.Content.Trim().Split(' ')[1]; } catch { }
+
+                if (_code == null) return;
+
+                var _userId = message.Author.Id;
+                var _username = message.Author.Username;
+                var _disc = message.Author.Discriminator;
+
+                var _ret = new EmbedBuilder();
+                _ret.WithTitle($"Welcome {_username}");
+                _ret.Fields = new List<EmbedFieldBuilder>
+                    {
+                        new EmbedFieldBuilder{
+                            IsInline = true,
+                            Name = "Id",
+                            Value = _userId
+                        },
+                        new EmbedFieldBuilder{
+                            IsInline = true,
+                            Name = "Username",
+                            Value = _username
+                        },
+                        new EmbedFieldBuilder
+                        {
+                            IsInline = false,
+                            Name = "Description",
+                            Value = _disc
+                        }
+                    };
+
+                await message.Channel.SendMessageAsync("", false, _ret.Build());
             }
         }
     }
