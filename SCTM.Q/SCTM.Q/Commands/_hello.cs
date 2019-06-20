@@ -1,6 +1,9 @@
 ﻿using Discord.Commands;
+using Newtonsoft.Json;
+using SCTM.Q.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,9 +22,21 @@ namespace SCTM.Q.Commands
 
             var msg = await channel.SendMessageAsync($"Hi {_discordUsername}. I'm Verifying {_code} as your hello code...");
             await Context.Message.DeleteAsync();
-            Thread.Sleep(5000);
 
-            await channel.SendMessageAsync($"Welcome {_discordUsername}");
+            var _body = new DiscordVerifyRequest
+            {
+                DiscordId = Context.Message.Author.Id,
+                HelloCode = helloCode.Trim()
+            };
+            var _result = await _http.PostAsync("auth/verify/discord", new StringContent(JsonConvert.SerializeObject(_body), Encoding.UTF8, "application/json"));
+            if(_result.IsSuccessStatusCode)
+            {
+                await channel.SendMessageAsync($"Welcome {_discordUsername}");
+            } else
+            {
+                await channel.SendMessageAsync($"Sorry {_discordUsername}, something went wrong");
+            }
+            
 
         }
     }
