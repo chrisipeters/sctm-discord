@@ -31,7 +31,9 @@ namespace SCTM.Q.Commands
             var _result = await _http.PostAsync("auth/verify/discord", new StringContent(JsonConvert.SerializeObject(_body), Encoding.UTF8, "application/json"));
             if(_result.IsSuccessStatusCode)
             {
+                await Process_RoleAdd(Context.Message.Author.Id, "members");
                 await channel.SendMessageAsync($"Welcome {_discordUsername}");
+                
             } else
             {
                 await channel.SendMessageAsync($"Sorry {_discordUsername}, something went wrong");

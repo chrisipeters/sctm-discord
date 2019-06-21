@@ -38,7 +38,7 @@ namespace SCTM.Q.Commands
         }
 
         [Command("roles add")]
-        public async Task Process_RoleAdd(long discordId, string roleName)
+        public async Task Process_RoleAdd(ulong discordId, string roleName)
         {
             IUser _author = Context.Message.Author;
             var channel = await Context.Message.Author.GetOrCreateDMChannelAsync();
