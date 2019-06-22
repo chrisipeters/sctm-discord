@@ -20,8 +20,8 @@ namespace SCTM.Q.Commands
 
             var _body = new LoginRequest
             {
-                Email = "q@sctrademasters.com",
-                Password = "jeaChr@1srevolt$4r"
+                Email = Environment.GetEnvironmentVariable("SCTM_Q_Email"),
+                Password = Environment.GetEnvironmentVariable("SCTM_Q_Password")
             };
             var _bodyJson = JsonConvert.SerializeObject(_body);
             var _result = _http.PostAsync("auth/login", new StringContent(_bodyJson, Encoding.UTF8, "application/json")).Result;
