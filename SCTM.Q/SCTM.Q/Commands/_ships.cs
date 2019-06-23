@@ -25,8 +25,7 @@ namespace SCTM.Q.Commands
 
             var _searchTerms = args.ToLower().Trim().Split(' ').ToList();
 
-            HttpClient _client = new HttpClient();
-            var result = await _client.GetAsync($"https://localhost:44325/data/ships");
+            var result = await _http.GetAsync($"data/ships");
             var content = await result.Content.ReadAsStringAsync();
             var _ships = JsonConvert.DeserializeObject<List<Ship>>(content);
 

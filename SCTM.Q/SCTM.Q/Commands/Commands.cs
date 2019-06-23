@@ -16,13 +16,16 @@ namespace SCTM.Q.Commands
         public Commands()
         {
             _http = new HttpClient();
-            _http.BaseAddress = new Uri("https://localhost:44325");
+            _http.BaseAddress = new Uri(Environment.GetEnvironmentVariable("SCTM_Q_APIUrl"));
+            Console.WriteLine("connecting to API Url: " + _http.BaseAddress);
 
             var _body = new LoginRequest
             {
                 Email = Environment.GetEnvironmentVariable("SCTM_Q_Email"),
                 Password = Environment.GetEnvironmentVariable("SCTM_Q_Password")
             };
+            Console.WriteLine("Connecting as: " + _body.Email);
+
             var _bodyJson = JsonConvert.SerializeObject(_body);
             var _result = _http.PostAsync("auth/login", new StringContent(_bodyJson, Encoding.UTF8, "application/json")).Result;
             var _content = _result.Content.ReadAsStringAsync().Result;
