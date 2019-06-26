@@ -1,11 +1,10 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Newtonsoft.Json;
 using SCTM.Q.Models;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SCTM.Q.Commands
@@ -31,7 +30,25 @@ namespace SCTM.Q.Commands
             var _result = await _http.PostAsync("auth/verify/discord", new StringContent(JsonConvert.SerializeObject(_body), Encoding.UTF8, "application/json"));
             if(_result.IsSuccessStatusCode)
             {
-                await Process_RoleAdd(Context.Message.Author.Id, "members");
+
+                IGuildUser _member = await Context.Guild.GetUserAsync(Context.Message.Author.Id);
+                string _memberKnownAs = _member.Nickname ?? $"{_member.Username}#{_member.Discriminator}";
+                _memberKnownAs += $" [{_member.Id}]";
+
+
+                IRole _role = Context.Guild.Roles.Where(i => i.Name.ToLower() == "members").FirstOrDefault();
+                if (_role != null)
+                {
+                    await _member.AddRoleAsync(_role);
+
+                    await channel.SendMessageAsync($"I've added {_member.Username}#{_member.Discriminator} [{_member.Id}] to role: {_role.Name}");
+                }
+                else
+                {
+                    await channel.SendMessageAsync($"I'm not seeing a role named: members");
+                }
+
+
                 await channel.SendMessageAsync($"Welcome {_discordUsername}");
                 
             } else
