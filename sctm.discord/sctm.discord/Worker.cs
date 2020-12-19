@@ -4,6 +4,7 @@ using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -58,6 +59,11 @@ namespace sctm.discord
             Client.Ready += Client_Ready;
             Client.GuildAvailable += Client_GuildAvailable;
             Client.ClientErrored += Client_ClientError;
+
+            var deps = new ServiceCollection()
+                .AddSingleton(typeof(Services), new Services(_config, Client, Commands))
+                .AddSingleton(typeof(IConfiguration), _config)
+                .BuildServiceProvider();
             #endregion
 
             #region Commands
@@ -65,7 +71,8 @@ namespace sctm.discord
             {
                 StringPrefixes = new[] { _config["Discord:CommandPrefix"] },
                 EnableDms = true,
-                EnableMentionPrefix = true
+                EnableMentionPrefix = true,
+                Services = deps
             });
 
             Commands.CommandExecuted += Commands_CommandExecuted;
@@ -76,6 +83,8 @@ namespace sctm.discord
             #endregion
 
             await Client.ConnectAsync();
+
+
 
             await Task.Delay(-1);
 
